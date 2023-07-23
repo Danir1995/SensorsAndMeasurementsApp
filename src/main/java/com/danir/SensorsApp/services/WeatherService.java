@@ -2,9 +2,14 @@ package com.danir.SensorsApp.services;
 
 import com.danir.SensorsApp.models.Weather;
 import com.danir.SensorsApp.repositories.WeatherRepository;
+import com.danir.SensorsApp.util.NoSensorException;
+import com.danir.SensorsApp.util.SensorErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,9 +46,19 @@ public class WeatherService {
         weatherRepository.save(measurement);
     }
 
-    public void enrichMeasurement(Weather measurement){
+    public void enrichMeasurement(Weather measurement) throws NoSensorException{
         measurement.setSensor(sensorService.findByName(measurement.getSensor().getName()).get());
         measurement.setDateTime(LocalDateTime.now());
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<SensorErrorResponse> handleException(NoSensorException e){
+        SensorErrorResponse response = new SensorErrorResponse(
+                "No Sensor exists with this name",
+                System.currentTimeMillis()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
 }
