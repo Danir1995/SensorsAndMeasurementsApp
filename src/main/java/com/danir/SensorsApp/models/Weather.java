@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "weather")
-@Getter
-@Setter
+@Data
 public class Weather {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,16 +3,15 @@ package com.danir.SensorsApp.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 
 @Entity
 @Table(name = "sensor")
-@Getter
-@Setter
-public class Sensor implements Serializable {
+@Data
+public class Sensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
